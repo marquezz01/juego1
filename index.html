@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explota los Globos</title>
+    <link rel="stylesheet" href="css">
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+            background: url('112.jpg') no-repeat center center fixed;
+            background-size: cover;
+        }
+        #start-button {
+            font-size: 20px;
+            padding: 10px 20px;
+            cursor: pointer;
+            margin-top: 50px;
+        }
+        #game-container {
+            position: relative;
+            width: 90%;
+            max-width: 500px;
+            height: 400px;
+            background: url('113.jpg') no-repeat center center;
+            background-size: cover;
+            border: 5px solid black;
+            display: none;
+            flex-direction: column;
+            justify-content: space-around;
+            align-items: center;
+            margin: auto;
+            margin-top: 50px;
+            padding: 10px;
+        }
+        .balloon-row {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            width: 100%;
+            flex-wrap: wrap;
+        }
+        .balloon {
+            width: 40px;
+            height: 60px;
+            background-color: red;
+            border-radius: 50% / 60% 60% 40% 40%; /* Forma más realista */
+            cursor: pointer;
+            position: relative;
+            transition: transform 0.2s;
+            animation: float 2s ease-in-out infinite alternate;
+        }
+        .balloon::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            width: 10px;
+            height: 15px;
+            background: inherit;
+            border-radius: 50%;
+            transform: translateX(-50%);
+        }
+        .balloon:hover {
+            transform: scale(1.2);
+        }
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            100% { transform: translateY(-10px); }
+        }
+        #video-container {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        #video-container iframe {
+            width: 100%;
+            max-width: 560px;
+            height: 315px;
+        }
+        @media (max-width: 600px) {
+            .balloon {
+                width: 30px;
+                height: 50px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>BUSQUE LA PROPUESTA🎈</h1>
+    <button id="start-button" onclick="startGame()">IniciE</button>
+    <h2 id="score-display" style="display:none;">Puntos: <span id="score">0</span></h2>
+    <div id="game-container">
+        <div class="balloon-row" id="row1"></div>
+        <div class="balloon-row" id="row2"></div>
+        <div class="balloon-row" id="row3"></div>
+    </div>
+    <div id="video-container">
+        <iframe id="youtube-video" src="" frameborder="0" allowfullscreen></iframe>
+        <button onclick="closeVideo()">Cerrar</button>
+    </div>
+    <script>
+        let score = 0;
+        function getRandomColor() {
+            const colors = ['red', 'blue', 'yellow', 'green', 'purple', 'orange', 'pink'];
+            return colors[Math.floor(Math.random() * colors.length)];
+        }
+        function createBalloon(rowId) {
+            const balloon = document.createElement('div');
+            balloon.classList.add('balloon');
+            balloon.style.backgroundColor = getRandomColor();
+            document.getElementById(rowId).appendChild(balloon);
+            
+            balloon.addEventListener('click', () => {
+                score++;
+                document.getElementById('score').textContent = score;
+                balloon.remove();
+                if (Math.random() < 0.3) {
+                    showVideo('https://www.youtube.com/embed/dQw4w9WgXcQ');
+                }
+            });
+        }
+        
+        function showVideo(url) {
+            document.getElementById('youtube-video').src = url;
+            document.getElementById('video-container').style.display = 'block';
+        }
+        
+        function closeVideo() {
+            document.getElementById('video-container').style.display = 'none';
+            document.getElementById('youtube-video').src = '';
+        }
+        
+        function populateRows() {
+            for (let i = 0; i < 5; i++) {
+                createBalloon('row1');
+                createBalloon('row2');
+                createBalloon('row3');
+            }
+        }
+        
+        function startGame() {
+            document.getElementById('start-button').style.display = 'none';
+            document.getElementById('game-container').style.display = 'flex';
+            document.getElementById('score-display').style.display = 'block';
+            populateRows();
+        }
+    </script>
+</body>
+</html>

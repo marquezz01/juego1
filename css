@@ -1,0 +1,17 @@
+#game-container {
+    position: relative;
+    width: 5500px;
+    height: 400px;
+    background: white;
+    border: 5px solid rgb(0, 209, 70);
+    display: none;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    margin: auto;
+    margin-top: 50px;
+    padding: 10px;
+    background-image: url('imagen-de-fondo.jpg'); /* Espacio para la imagen */
+    background-size: cover;
+    background-position: center;
+}
